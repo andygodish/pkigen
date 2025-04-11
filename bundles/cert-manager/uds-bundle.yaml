@@ -1,0 +1,19 @@
+# Copyright 2024 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+kind: UDSBundle
+metadata:
+  name: cert-manager
+  description: A UDS bundle for standing up a cert-manager instance.
+  # x-release-please-start-version
+  version: 1.16.2-uds.0
+  # x-release-please-end
+
+packages:
+  - name: init
+    repository: ghcr.io/zarf-dev/packages/init
+    ref: v0.51.0
+
+  - name: cert-manager
+    path: ../../
+    ref: 1.16.2

@@ -1,0 +1,20 @@
+# Copyright 2024 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/uds-cli/main/tasks.schema.json
+
+includes:
+  - create: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.13.0/tasks/create.yaml
+
+variables:
+  - name: ARCH
+    description: "What architecture to use"
+  - name: BUNDLE
+    description: The name of the bundle you are working with
+
+tasks:
+  - name: cert-manager
+    description: Create the Dependency Zarf Package(s)
+    actions:
+      - task: create:package
+        with:
+          path: packages/cert-manager

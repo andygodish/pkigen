@@ -1,0 +1,17 @@
+# Copyright 2024 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+crds:
+  enabled: true
+
+# delete secret if certificate is deleted
+extraArgs:
+  - --enable-certificate-owner-ref=true
+
+prometheus:
+  enabled: false
+  servicemonitor:
+    enabled: false
+
+startupapicheck:
+  enabled: false

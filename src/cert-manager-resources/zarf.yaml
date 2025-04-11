@@ -1,0 +1,21 @@
+# Copyright 2024 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+kind: ZarfPackageConfig
+metadata:
+  name: cert-manager-resources
+  description: "Create issuers and certificate CRs for testing cert-manager"
+  version: 0.1.0
+
+components:
+  - name: cert-manager-resources
+    required: true
+    manifests:
+      - name: cert-manager-resources
+        files:
+          - certificates/selfsigned-ca.yaml
+          - issuers/ca-clusterissuer.yaml
+          - issuers/selfsigned-clusterissuer.yaml
+          - certificates/selfsigned-admin-cert-test.yaml
+          - certificates/selfsigned-podinfo.yaml
+          - certificates/selfsigned-tenant-cert-test.yaml

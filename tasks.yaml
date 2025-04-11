@@ -13,6 +13,7 @@ includes:
   - compliance: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.13.0/tasks/compliance.yaml
   - publish: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.13.0/tasks/publish.yaml
   - bundles: ./tasks/bundles.yaml
+  - packages: ./tasks/packages.yaml
 
 tasks:
   - name: default
@@ -23,3 +24,9 @@ tasks:
     actions:
       - task: bundles:k3d-create
       - task: bundles:k3d-deploy
+  
+  - name: cert-manager
+    actions:
+      - task: packages:cert-manager
+      - task: bundles:cert-manager-create
+      - task: bundles:cert-manager-deploy

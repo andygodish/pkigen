@@ -22,3 +22,19 @@ tasks:
         with:
           path: "bundles/k3d"
           config: "bundles/k3d/uds-config.yaml"
+
+  - name: cert-manager-create
+    description: Creates cert-manager bundle from the local bundles dir
+    actions:
+      - task: create:test-bundle
+        with:
+          path: "bundles/cert-manager"
+          config: "bundles/cert-manager/uds-config.yaml"
+
+  - name: cert-manager-deploy
+    description: Deploys cert-manager bundle from the local bundles dir
+    actions:
+      - task: deploy:test-bundle
+        with:
+          path: "bundles/cert-manager"
+          config: "bundles/cert-manager/uds-config.yaml"
