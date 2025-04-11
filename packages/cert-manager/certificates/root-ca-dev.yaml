@@ -1,0 +1,25 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: root-ca-dev
+  namespace: cert-manager
+spec:
+  isCA: true
+  commonName: "Homelab Root CA Dev"
+  secretName: root-ca-dev-secret
+  duration: 87600h # 10 years
+  subject:
+    organizations:
+      - "Homelab PKI"
+  privateKey:
+    algorithm: RSA
+    size: 4096
+  issuerRef:
+    name: selfsigned-cluster-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+  usages:
+    - cert sign
+    - crl sign
+    - server auth
+    - client auth

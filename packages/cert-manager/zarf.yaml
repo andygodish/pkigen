@@ -20,3 +20,19 @@ components:
       - quay.io/jetstack/cert-manager-cainjector:v1.16.2
       - quay.io/jetstack/cert-manager-controller:v1.16.2
       - quay.io/jetstack/cert-manager-webhook:v1.16.2
+  - name: selfsigned-issuer
+    required: true
+    manifests:
+      - name: selfsigned-issuer
+        files:
+          - issuers/selfsigned-clusterissuer.yaml
+  - name: dev-certificates
+    required: true
+    manifests:
+      - name: dev-certificates
+        files:
+          - certificates/root-ca-dev.yaml
+          - issuers/root-ca-dev-issuer.yaml
+          - certificates/intermediate-ca-dev.yaml
+          - issuers/intermediate-ca-dev-issuer.yaml
+          - certificates/wildcard-dev-lan.yaml

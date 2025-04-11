@@ -1,0 +1,19 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-dev-lan
+  namespace: cert-manager # You can change this to where you want to store the certificate
+spec:
+  secretName: wildcard-dev-lan-tls
+  duration: 8760h # 1 year
+  renewBefore: 720h # 30 days
+  commonName: "*.lan.dev"
+  dnsNames:
+  - "*.lan.dev"
+  - "*.admin.lan.dev"
+  - "lan.dev"        # Also include the apex domain
+  - "admin.lan.dev"  # Also include the apex domain
+  issuerRef:
+    name: intermediate-ca-dev-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
