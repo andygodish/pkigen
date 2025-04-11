@@ -1,0 +1,7 @@
+# Copyright 2025 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+shared:
+  # domain: lan.andyg.io
+  # k3d_image: rancher/k3s:v1.29.4-k3s1
+  k3d_extra_args: "--k3s-arg --tls-san=192.168.1.61@server:*"

@@ -1,0 +1,29 @@
+{
+  "enabled": true,
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "prHourlyLimit": 10,
+  "extends": [
+    "config:recommended",
+    "github>defenseunicorns/uds-common//renovate.json"
+  ],
+  "packageRules": [
+    {
+      "matchFiles": ["**/bundles/k3d/uds-config.yaml"],
+      "matchPackagePatterns": ["rancher/k3s"],
+      "enabled": false
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": ["bundles/k3d/uds-bundle\\.yaml$"],
+      "matchStrings": [
+        "packages:\\n\\s+- name: uds-k3d\\n\\s+repository: [^\\n]+\\n\\s+ref: (?<currentValue>\\d+\\.\\d+\\.\\d+)"
+      ],
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "https://github.com/defenseunicorns/uds-k3d",
+      "versioningTemplate": "semver",
+      "extractVersionTemplate": "^v?(?<version>\\d+\\.\\d+\\.\\d+)$"
+    }
+  ]
+}

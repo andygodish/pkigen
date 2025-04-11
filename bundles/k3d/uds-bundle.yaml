@@ -1,0 +1,29 @@
+# Copyright 2025 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+kind: UDSBundle
+metadata:
+  name: k3d
+  description: K3d Cluster
+  version: dev
+  url: https://github.com/defenseunicorns/uds-k3d
+packages:
+  - name: uds-k3d
+    repository: ghcr.io/defenseunicorns/packages/uds-k3d
+    ref: 0.12.2
+    overrides:
+      uds-dev-stack:
+        minio:
+          variables:
+            - name: BUCKETS
+              description: "Set Minio Buckets"
+              path: buckets
+            - name: SVCACCTSx
+              description: "Minio Service Accounts"
+              path: svcaccts
+            - name: USERS
+              description: "Minio Users"
+              path: users
+            - name: POLICIES
+              description: "Minio policies"
+              path: policies

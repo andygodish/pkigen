@@ -1,0 +1,24 @@
+# Copyright 2024 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/uds-cli/main/tasks.schema.json
+
+includes:
+  - create: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.13.0/tasks/create.yaml
+  - deploy: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.13.0/tasks/deploy.yaml
+
+tasks:
+  - name: k3d-create
+    description: Creates k3d cluster bundle from the local bundles dir
+    actions:
+      - task: create:test-bundle
+        with:
+          path: "bundles/k3d"
+          config: "bundles/k3d/uds-config.yaml"
+
+  - name: k3d-deploy
+    description: Deploys k3d cluster bundle from the local bundles dir
+    actions:
+      - task: deploy:test-bundle
+        with:
+          path: "bundles/k3d"
+          config: "bundles/k3d/uds-config.yaml"
