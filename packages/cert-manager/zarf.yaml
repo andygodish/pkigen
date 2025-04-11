@@ -36,3 +36,10 @@ components:
           - certificates/intermediate-ca-dev.yaml
           - issuers/intermediate-ca-dev-issuer.yaml
           - certificates/wildcard-dev-lan.yaml
+    actions:
+      onDeploy:
+        after:
+          - cmd: mkdir -p certificates/lan.dev
+          - cmd: ./zarf tools kubectl get secret -n cert-manager wildcard-dev-lan-tls -o yaml | ./zarf tools yq '.data."ca.crt"' > certificates/lan.dev/ca.crt
+          - cmd: ./zarf tools kubectl get secret -n cert-manager wildcard-dev-lan-tls -o yaml | ./zarf tools yq '.data."tls.crt"' > certificates/lan.dev/tls.crt
+          - cmd: ./zarf tools kubectl get secret -n cert-manager wildcard-dev-lan-tls -o yaml | ./zarf tools yq '.data."tls.key"' > certificates/lan.dev/tls.key

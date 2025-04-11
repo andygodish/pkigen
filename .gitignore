@@ -29,3 +29,5 @@ src/uds-core
 
 gitlab-secrets-backup-*
 **/*.pem
+**/*.crt
+**/*.key
