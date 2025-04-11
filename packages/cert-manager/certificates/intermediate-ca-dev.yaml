@@ -15,7 +15,7 @@ spec:
     algorithm: RSA
     size: 4096
   issuerRef:
-    name: root-ca-dev-issuer  # Must match the issuer name above
+    name: root-ca-dev-issuer # Must match the issuer name above
     kind: ClusterIssuer
     group: cert-manager.io
   usages:

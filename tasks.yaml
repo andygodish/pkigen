@@ -24,7 +24,7 @@ tasks:
     actions:
       - task: bundles:k3d-create
       - task: bundles:k3d-deploy
-  
+
   - name: cert-manager
     actions:
       - task: packages:cert-manager

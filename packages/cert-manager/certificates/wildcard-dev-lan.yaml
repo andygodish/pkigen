@@ -9,10 +9,10 @@ spec:
   renewBefore: 720h # 30 days
   commonName: "*.lan.dev"
   dnsNames:
-  - "*.lan.dev"
-  - "*.admin.lan.dev"
-  - "lan.dev"        # Also include the apex domain
-  - "admin.lan.dev"  # Also include the apex domain
+    - "*.lan.dev"
+    - "*.admin.lan.dev"
+    - "lan.dev" # Also include the apex domain
+    - "admin.lan.dev" # Also include the apex domain
   issuerRef:
     name: intermediate-ca-dev-issuer
     kind: ClusterIssuer
