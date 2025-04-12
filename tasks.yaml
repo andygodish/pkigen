@@ -19,6 +19,7 @@ tasks:
   - name: default
     actions:
       - task: k3d
+      - task: dev
 
   - name: k3d
     actions:
@@ -30,3 +31,9 @@ tasks:
       - task: packages:cert-manager
       - task: bundles:cert-manager-create
       - task: bundles:cert-manager-deploy
+  
+  - name: dev
+    actions:
+      - task: packages:core-secrets
+      - task: bundles:dev-create
+      - task: bundles:dev-deploy

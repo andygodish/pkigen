@@ -1,0 +1,159 @@
+# Copyright 2024 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+kind: UDSBundle
+metadata:
+  name: dev
+  description: dev bundle for testing certificate issues
+  # x-release-please-start-version
+  version: dev
+  # x-release-please-end
+
+packages:
+  - name: init
+    repository: ghcr.io/zarf-dev/packages/init
+    ref: v0.51.0
+
+  # Deploy uds-core base functional layer which includes istio, uds-operator, and uds CRDs
+  - name: core-base
+    # renovate: image=ghcr.io/defenseunicorns/packages/uds/core-base
+    repository: ghcr.io/defenseunicorns/packages/uds/core-base
+    ref: "0.39.0-upstream"
+    overrides:
+      uds-operator-config:
+        uds-operator-config:
+          variables:
+            - path: operator.UDS_CA_CERT # This allows authservice/uds-ui to trust the private cert chain
+              name: CA_CERT
+              type: file
+              default: "ca.crt"
+      istio-admin-gateway:
+        uds-istio-config:
+          variables:
+            - name: ADMIN_TLS_CERT
+              path: tls.cert
+              type: file
+              default: "tls.crt"
+            - name: ADMIN_TLS_KEY
+              path: tls.key
+              type: file
+              default: "tls.key"
+            - name: CACERT
+              path: tls.cacert
+              type: file
+              default: "ca.crt"
+      istio-tenant-gateway:
+        uds-istio-config:
+          variables:
+            - name: TENANT_TLS_CERT
+              path: tls.cert
+              type: file
+              default: "tls.crt"
+            - name: TENANT_TLS_KEY
+              path: tls.key
+              type: file
+              default: "tls.key"
+            - name: CACERT
+              path: tls.cacert
+              type: file
+              default: "ca.crt"
+
+  - name: minio-operator
+    repository: ghcr.io/defenseunicorns/packages/uds/minio-operator
+    ref: 7.0.1-uds.1-upstream
+    overrides:
+      minio-operator:
+        uds-minio-config:
+          values:
+            # Test helm overrides to provision app specific buckets, policies and creds
+            - path: apps
+              value:
+                - name: gitlab
+                  namespace: gitlab
+                  bucketNames:
+                    - uds-gitlab-artifacts
+                    - uds-gitlab-backups
+                    - uds-gitlab-ci-secure-files
+                    - uds-gitlab-dependency-proxy
+                    - uds-gitlab-lfs
+                    - uds-gitlab-mr-diffs
+                    - uds-gitlab-packages
+                    - uds-gitlab-pages
+                    - uds-gitlab-terraform-state
+                    - uds-gitlab-uploads
+                    - uds-gitlab-registry
+                    - uds-gitlab-tmp
+                  policy: ""
+                  copyPassword:
+                    enabled: true
+                    secretName: "gitlab-minio"
+                    secretIDKey: "access_key"
+                    secretPasswordKey: "secret_key"
+        minio-tenant:
+          values:
+            - path: tenant.pools
+              value:
+                - servers: 1
+                  name: pool-0
+                  volumesPerServer: 4
+                  size: 30Gi
+
+  - name: postgres-operator
+    repository: ghcr.io/defenseunicorns/packages/uds/postgres-operator
+    ref: 1.14.0-uds.1-upstream
+    overrides:
+      postgres-operator:
+        uds-postgres-config:
+          values:
+            - path: postgresql
+              value:
+                enabled: true
+                teamId: "uds"
+                volume:
+                  size: "30Gi"
+                numberOfInstances: 2
+                users:
+                  keycloak.keycloak: [] # database owner
+                  sonarqube.sonarqube: []
+                  grafana.grafana: []
+                  gitlab.gitlab: []
+                databases:
+                  keycloakdb: keycloak.keycloak
+                  gitlabdb: gitlab.gitlab
+                version: "14"
+                ingress:
+                  - remoteNamespace: keycloak
+                  - remoteNamespace: gitlab
+
+  - name: core-secrets
+    path: ../../
+    ref: "dev"
+    exports:
+      - name: KC_DB_PASSWORD
+
+  # UDS core identity layer which includes keycloak and auth service
+  - name: core-identity-authorization
+    repository: ghcr.io/defenseunicorns/packages/uds/core-identity-authorization
+    ref: "0.39.0-upstream"
+    imports:
+      - name: KC_DB_PASSWORD
+        package: core-secrets
+    overrides:
+      keycloak:
+        keycloak:
+          values:
+            - path: devMode
+              value: false
+            - path: postgresql.database
+              value: keycloakdb
+            - path: postgresql.username
+              value: keycloak.keycloak
+            - path: postgresql.host
+              value: pg-cluster.postgres.svc.cluster.local
+            - path: insecureAdminPasswordGeneration.enabled
+              value: true
+            - path: resources.limits.memory
+              value: "3Gi"
+          variables:
+            - name: KC_DB_PASSWORD
+              path: postgresql.password

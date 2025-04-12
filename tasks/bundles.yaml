@@ -38,3 +38,20 @@ tasks:
         with:
           path: "bundles/cert-manager"
           config: "bundles/cert-manager/uds-config.yaml"
+ 
+  - name: dev-create
+    description: Creates dev bundle from the local bundles dir
+    actions:
+      - task: create:test-bundle
+        with:
+          path: "bundles/dev"
+          config: "bundles/dev/uds-config.yaml"
+
+  - name: dev-deploy
+    description: Deploys dev bundle from the local bundles dir
+    actions:
+      - task: deploy:test-bundle
+        with:
+          path: "bundles/dev"
+          config: "bundles/dev/uds-config.yaml"
+          

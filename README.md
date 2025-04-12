@@ -57,3 +57,7 @@ Use intermediate-ca-issuer to create service certificates:
 - These are your actual TLS certificates used by services
 
 In this flow, we're creating both certificates AND issuers in alternating steps. Each certificate (except the last "leaf") becomes the basis for a new issuer.
+
+## Passing in Certificates as Overrirdes
+
+Scenario: on-prem UDS cluster requires a custom domain, `lan.dev`, that needs to be used accross all services containing a web interface application. We were given a private cert/key pair. Our first iteration uses a script to populate the uds-config.yaml with the base64 encoded cert, key, and ca cert. It's janky and prone to easily exposing private keys up if accidentally pushed up to the remote git origin (we're not using SOPS either). Using a file type variable in our overrides resulted in the tls secret type that is created for use by the ingress gateways (tenant & admin) would not work to the multiline format of the data. 

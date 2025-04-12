@@ -18,3 +18,10 @@ tasks:
       - task: create:package
         with:
           path: packages/cert-manager
+  
+  - name: core-secrets
+    description: Pulls datastore passwords used by other packages
+    actions:
+      - task: create:package
+        with:
+          path: packages/core-secrets

@@ -1,0 +1,20 @@
+# Copyright 2024 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+kind: ZarfPackageConfig
+metadata:
+  name: core-secrets
+  description: "secret management for core components"
+  version: dev
+
+components:
+  - name: core-secrets
+    required: true
+    actions:
+      onDeploy:
+        before:
+          - cmd: ./zarf tools kubectl get secret -n keycloak keycloak.keycloak.pg-cluster.credentials.postgresql.acid.zalan.do --template={{.data.password}} | base64 -d
+            mute: true
+            setVariables:
+              - name: KC_DB_PASSWORD
+                sensitive: true
