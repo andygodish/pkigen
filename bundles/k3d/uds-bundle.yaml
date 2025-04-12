@@ -13,6 +13,12 @@ packages:
     ref: 0.12.2
     overrides:
       uds-dev-stack:
+        uds-dev-stack:
+          variables:
+            - name: COREDNS_OVERRIDES
+              # Defaults contain rewrites of `*.uds.dev` to the UDS core Istio tenant and admin gateways
+              description: "CoreDNS overrides"
+              path: coreDnsOverrides
         minio:
           variables:
             - name: BUCKETS

@@ -2,6 +2,17 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
 
 shared:
-  # domain: lan.andyg.io
+  domain: lan.dev
   # k3d_image: rancher/k3s:v1.29.4-k3s1
-  k3d_extra_args: "--k3s-arg --tls-san=192.168.1.61@server:*"
+  # k3d_extra_args: "--k3s-arg --tls-san=192.168.1.61@server:*"
+
+variables:
+  uds-k3d:
+    coredns_overrides: |
+      rewrite stop {
+        name regex (.*\.admin\.lan\.dev) admin-ingressgateway.istio-admin-gateway.svc.cluster.local answer auto
+      }
+      rewrite stop {
+        name regex (.*\.lan\.dev) tenant-ingressgateway.istio-tenant-gateway.svc.cluster.local answer auto
+      }
+      
